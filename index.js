@@ -69,7 +69,7 @@ async function main() {
 							}
 						);
 						let html = `<em>Nächster MakerTalk im FabLab Winti:</em>
-<h3>${formatLongDate(date)} – Türöffnung ${formatTime(date)} – Beginn ${formatTime(date.plus({minutes: 30}))}</h3>
+<h3>${formatLongDate(date)} – ${formatTime(date)} Türöffnung – ${formatTime(date.plus({minutes: 30}))} Beginn</h3>
 <h2>${title}</h2>${referentTotal ? `\n<h3>${referentTotal}</h3>` : ''}
 <p>${description}</p>
 `;
