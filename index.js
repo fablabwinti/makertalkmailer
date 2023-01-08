@@ -61,7 +61,7 @@ async function main() {
 						let referent = null;
 						let referentTotal = null;
 						let description = ev.description.replace(
-							/(^|(<br>)+)(Referent[^:]*:([^<]*))($|(<br>)+)/,
+							/(^|(<br ?\/?>)+)(Referent[^:]*:([^<]*))($|(<br ?\/?>)+)/,
 							(_, g1, __, g3, g4, g5) => {
 								referent = g4.trim();
 								referentTotal = g3.trim();
