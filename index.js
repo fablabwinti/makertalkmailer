@@ -88,16 +88,17 @@ ${talkcount} MakerTalks
 ${intvcount} in interval ${intervalStart.toISOString()} - ${intervalEnd.toISOString()}
 ${talks.length} not sent yet`);
 
-	// for testing: locally output the message instead of sending it, output infos[0].message.toString()
-	// const transporter = nodemailer.createTransport({streamTransport: true, buffer: true, newline: 'windows'});
-	
-	const transporter = nodemailer.createTransport({
-		host: 'mail.cyon.ch',
-		auth: {
-			user: "fg_makertalk@fablabwinti.ch",
-			pass: secrets.smtp_password,
+	const transporter = nodemailer.createTransport(
+		process.argv.includes('--dry-run')
+		? {streamTransport: true, buffer: true, newline: 'windows'}
+		: {
+			host: 'mail.cyon.ch',
+			auth: {
+				user: "fg_makertalk@fablabwinti.ch",
+				pass: secrets.smtp_password,
+			}
 		}
-	});
+	);
 	await Promise.all(talks.map(async ([subject, html]) => {
 		let text = convert(html, {
 			wordwrap: 72,
@@ -131,6 +132,11 @@ ${talks.length} not sent yet`);
 		sent.push(crypto.createHash('md5').update(html).digest('hex'));
 		fs.writeFileSync(SENT_MESSAGES_FILE, JSON.stringify(sent));
 		console.log(infos);
+		// dry-run output: message is only set for streamTransport, not for SMTP
+		if (infos[0].message) {
+			fs.writeFileSync('output.eml', infos[0].message);
+			console.log('message written to output.eml');
+		}
 	}));
 }
 
