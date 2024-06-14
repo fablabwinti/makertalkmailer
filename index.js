@@ -61,11 +61,11 @@ async function main() {
 						let referent = null;
 						let referentTotal = null;
 						let description = ev.description.replace(
-							/(^|(<br ?\/?>)+)(Referent[^:]*:([^<]*))($|(<br ?\/?>)+)/,
+							/(^|(<br ?\/?>|\n)+)(Referent[^:]*:([^<\n]*))($|(<br ?\/?>|\n)+)/,
 							(_, g1, __, g3, g4, g5) => {
 								referent = g4.trim();
 								referentTotal = g3.trim();
-								return (g1.length > g5.length) ? g1 : g5;
+								return ((g1.length > g5.length) ? g1 : g5).replace(/\n/g, '<br>');
 							}
 						);
 						let html = `<em>Nächster MakerTalk im FabLab Winti:</em>
